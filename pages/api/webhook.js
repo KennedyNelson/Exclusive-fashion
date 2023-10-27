@@ -1,22 +1,16 @@
 import { buffer } from "micro";
 import * as admin from "firebase-admin";
-
+import { firebaseAdmin } from "../../lib/firebase/firebaseAdmin";
 // Secure a connection to Firebase from the backend.
 // authenticate the admin. this is backend stuff, the other firebase.js
 // was for frontend work this could also be an import:
 
-const serviceAccount = require("../../firebasePermissions.json");
-
-// console.log(first)
-// console.log(JSON.parse(session));
-// Establish a connection to Stripe.
-
 const fulfillOrder = async (session) => {
   console.log("Fulfilling order", session);
-  return app
+  return firebaseAdmin
     .firestore()
     .collection("users")
-    .doc(session.metadata.email)
+    .doc(session.metadata.userId)
     .collection("orders")
     .doc(session.id)
     .set({
@@ -27,14 +21,13 @@ const fulfillOrder = async (session) => {
     })
     .then(() => {
       console.log(`SUCCESS: Order ${session.id} has been added to the DB`);
-    });
-};
-
-const app = !admin.apps.length
-  ? admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
     })
-  : admin.app();
+    .catch((err) =>
+      res
+        .status(400)
+        .send(`Error while creating document in the DB: ${err.message}`)
+    );
+};
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_SIGNING_SECRET;

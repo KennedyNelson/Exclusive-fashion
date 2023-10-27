@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-airbnb-clone",
+  "name": "exclusive-fashion",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,6 +22,7 @@
     "micro": "^10.0.1",
     "moment": "^2.29.4",
     "next": "13.1.1",
+    "nookies": "^2.5.2",
     "react": "^18.2.0",
     "react-currency-formatter": "^1.1.0",
     "react-dom": "18.2.0",

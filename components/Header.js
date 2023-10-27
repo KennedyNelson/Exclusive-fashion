@@ -17,7 +17,11 @@ function Header() {
   const dispatch = useDispatch();
 
   const handleGoogleSignIn = async () => {
-    const result = await dispatch(signinWithGoogle());
+    await dispatch(signinWithGoogle());
+  };
+  const handleLogout = async () => {
+    await dispatch(signOut());
+    router.push("/");
   };
 
   const items = useSelector(selectItems);
@@ -47,7 +51,7 @@ function Header() {
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
           <div
             className="link "
-            onClick={!user ? handleGoogleSignIn : () => dispatch(signOut())}
+            onClick={!user ? handleGoogleSignIn : handleLogout}
           >
             <p>
               {user

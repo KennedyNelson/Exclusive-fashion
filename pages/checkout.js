@@ -15,12 +15,15 @@ const stripePromise = loadStripe(String(process.env.STRIPE_PUBLIC_KEY));
 function Checkout() {
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
+  const { user } = useSelector((state) => state.userAuth);
+
   const createCheckoutSession = async () => {
     const stripe = await stripePromise;
     // call the backend to create a checkout session...
     const checkoutSession = await axios.post("/api/create-checkout-session", {
       items,
       email: user.email,
+      userId: user.id,
     });
 
     // Redirect user/customer to Stripe checkout
@@ -76,7 +79,8 @@ function Checkout() {
               <h2 className="whitespace-nowrap">
                 Subtotal ({items.length} items):{" "}
                 <span className="font-bold">
-                  <Currency quantity={total} currency="GBP" />
+                  <p>Rs {total}</p>
+                  {/* <Currency quantity={total} currency="GBP" /> */}
                 </span>
               </h2>
               <button

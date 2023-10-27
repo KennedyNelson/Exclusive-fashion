@@ -36,5 +36,3 @@ export async function getServerSideProps() {
     },
   };
 }
-
-// * GET >>> https://fakestoreapi.com/products
