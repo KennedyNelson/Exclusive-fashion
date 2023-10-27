@@ -15,13 +15,12 @@
 
 ## Objective
 
-- Project aims to create a Airbnb clone with using NextJS.
+- The main objective of this application is to provide an ecommerce application where people can get their hands on exclusive fashion clothing.
 - This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Description
 
-- I prepared a small-scale project in order to understand the NextJS that I have learned recently.
-- I use firebase for authentication, Fake Store API for product informations, stripe for payment process, firebase and firebase-admin for collecting order informations and TailwindCSS for styling.
+- Using firebase for authentication, Fake Store API for product informations, stripe for payment process, firebase and firebase-admin for collecting order informations and TailwindCSS for styling.
 
 ## Project Link
 
@@ -94,7 +93,7 @@ SOLUTION
 To run this project;
 
 - URL's
-  - Specify your NEXTAUTH_URL and HOST url in .env.local
+  - Specify your urls in .env.local
 - Stripe Keys
   - Signup https://stripe.com/ and create new account.
   - Copy your STRIPE_PUBLIC_KEY and STRIPE_SECRET_KEY.
