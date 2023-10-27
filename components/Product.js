@@ -3,7 +3,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-import { addToBasket } from "../slices/basketSlice";
+import { addToBasket } from "../store/slices/basketSlice";
 
 function Product({ id, title, price, description, category, image }) {
   const dispatch = useDispatch();

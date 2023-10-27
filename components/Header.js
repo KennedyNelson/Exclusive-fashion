@@ -4,16 +4,23 @@ import {
   ShoppingCartIcon,
   Bars3Icon,
 } from "@heroicons/react/24/outline";
-import { signIn, signOut, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { selectItems } from "../slices/basketSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectItems } from "../store/slices/basketSlice";
 import amazonLogo from "../public/amazon_logo.png";
+import { signinWithGoogle, signOut } from "../store/slices/authSlice";
 
 function Header() {
-  const [session] = useSession();
+  const { user } = useSelector((state) => state.userAuth);
   const router = useRouter();
+
+  const dispatch = useDispatch();
+
   // console.log(session);
+  const handleGoogleSignIn = async () => {
+    const result = await dispatch(signinWithGoogle());
+  };
+
   const items = useSelector(selectItems);
   return (
     <header className="fixed w-screen top-0 z-50 ">
@@ -39,11 +46,14 @@ function Header() {
         </div>
         {/* // ! Right */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
-          <div className="link " onClick={!session ? signIn : signOut}>
+          <div
+            className="link "
+            onClick={!user ? handleGoogleSignIn : () => dispatch(signOut())}
+          >
             <p>
-              {session
-                ? `Hello, ${session?.user.name
-                    .split(" ")
+              {user
+                ? `Hello, ${user?.displayName
+                    ?.split(" ")
                     .slice(0, 2)
                     .join(" ")}`
                 : "Sign In"}

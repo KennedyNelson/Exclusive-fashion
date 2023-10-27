@@ -1,12 +1,12 @@
 import Header from "../components/Header";
 import Head from "next/head";
-import { getSession, useSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/react";
 import moment from "moment";
-import db from "../firebase";
+import db from "../lib/firebase/";
 import { doc, getDocs, collection } from "firebase/firestore";
 import Order from "../components/Order";
 function Orders({ orders }) {
-  const [session] = useSession();
+  const { data: session } = useSession();
   // console.log(orders);
 
   return (

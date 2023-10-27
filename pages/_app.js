@@ -3,7 +3,8 @@ import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { store } from "../store";
 import { Provider } from "react-redux";
-import { Provider as AuthProvider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
+import ProtectedRoute from "../lib/firebase/authFunctions";
 
 export default function App({ Component, pageProps }) {
   const progress = new ProgressBar({
@@ -18,10 +19,12 @@ export default function App({ Component, pageProps }) {
   Router.events.on("routeChangeError", progress.finish);
 
   return (
-    <AuthProvider session={pageProps.session}>
+    <SessionProvider session={pageProps.session}>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <ProtectedRoute>
+          <Component {...pageProps} />
+        </ProtectedRoute>
       </Provider>
-    </AuthProvider>
+    </SessionProvider>
   );
 }

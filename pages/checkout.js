@@ -1,22 +1,22 @@
 import Image from "next/image";
 import Header from "../components/Header";
 import { useSelector } from "react-redux";
-import { selectItems, selectTotal } from "../slices/basketSlice";
+import { selectItems, selectTotal } from "../store/slices/basketSlice";
 import CheckoutProduct from "../components/CheckoutProduct";
 import Head from "next/head";
 import Currency from "react-currency-formatter";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import banner from "../public/prime_banner.jpg";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-console.log(typeof (process.env.STRIPE_PUBLIC_KEY))
+console.log(typeof process.env.STRIPE_PUBLIC_KEY);
 const stripePromise = loadStripe(String(process.env.STRIPE_PUBLIC_KEY));
 // const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY.toString());
 
 function Checkout() {
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
-  const [session] = useSession(); 
+  const { data: session } = useSession();
   const createCheckoutSession = async () => {
     const stripe = await stripePromise;
     // call the backend to create a checkout session...
