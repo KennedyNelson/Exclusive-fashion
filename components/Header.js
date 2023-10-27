@@ -16,7 +16,6 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  // console.log(session);
   const handleGoogleSignIn = async () => {
     const result = await dispatch(signinWithGoogle());
   };

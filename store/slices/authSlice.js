@@ -7,7 +7,7 @@ import {
   logOut,
   //   resetPassword,
   //   rememberMeEmailSignIn,
-} from "../../lib/firebase/authFunctions";
+} from "../../lib/firebase/auth";
 
 import { getUserFromDb } from "../../lib/firebase/db";
 

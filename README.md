@@ -1,4 +1,4 @@
-# NextJS - Amazon Clone
+# Exlusive-fashion
 
 <!-- stripe listen --forward-to localhost:3000/api/webhook -->
 
@@ -21,17 +21,16 @@
 ## Description
 
 - I prepared a small-scale project in order to understand the NextJS that I have learned recently.
-- I use next-auth for authentication, Fake Store API for product informations, stripe for payment process, firebase and firebase-admin for collecting order informations and TailwindCSS for styling.
-- I found the project from Youtube([Sonny Sangha](https://www.youtube.com/@SonnySangha)). You can see the related video from [here](https://www.youtube.com/watch?v=DF68MNDxVwU)
+- I use firebase for authentication, Fake Store API for product informations, stripe for payment process, firebase and firebase-admin for collecting order informations and TailwindCSS for styling.
 
 ## Project Link
 
-#### You can reach my project from [here](https://nextjs-amazon-clone-esadakman.vercel.app/) 👈
+#### You can reach my project here (coming soon) 👈
 
 ### Project Skeleton
 
 ```
-nextjs-amazon-clone (folder)
+Exclusive-fashion (folder)
 |----readme.md
 SOLUTION
 ├── components
@@ -83,7 +82,6 @@ SOLUTION
 - NextJS
 - TailwindCSS
 - redux-toolkit
-- next-auth
 - firebase
 - firebase-admin
 - momentjs
@@ -117,7 +115,7 @@ To run this project;
   - Go to your firebase/console and create new firebase database and generate your new private key, rename your file to `firebasePermissions` and move to your project file
 - And finally for webhook:
   - From `https://stripe.com/docs/stripe-cli` page download Stripe CLI and move to project folder.
-  - Open new terminal for webhook, run `stripe listen --forward-to localhost:3000/api/webhook`  and copy your signing secret from terminal and create your `STRIPE_SIGNING_SECRET`.
+  - Open new terminal for webhook, run `stripe listen --forward-to localhost:3000/api/webhook` and copy your signing secret from terminal and create your `STRIPE_SIGNING_SECRET`.
 
 After these you can run the project as usual =>
 
