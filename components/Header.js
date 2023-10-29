@@ -16,8 +16,8 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const handleGoogleSignIn = async () => {
-    await dispatch(signinWithGoogle());
+  const login = async () => {
+    router.push("/login");
   };
   const handleLogout = async () => {
     await dispatch(signOut());
@@ -49,16 +49,14 @@ function Header() {
         </div>
         {/* // ! Right */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
-          <div
-            className="link "
-            onClick={!user ? handleGoogleSignIn : handleLogout}
-          >
+          <div className="link " onClick={!user ? login : handleLogout}>
             <p>
               {user
-                ? `Hello, ${user?.displayName
-                    ?.split(" ")
-                    .slice(0, 2)
-                    .join(" ")}`
+                ? `Hello ${
+                    user?.displayName
+                      ? user.displayName.split(" ").slice(0, 2).join(" ")
+                      : ""
+                  }`
                 : "Sign In"}
             </p>
             <p className="font-extrabold md:text-sm">Account & Lists</p>

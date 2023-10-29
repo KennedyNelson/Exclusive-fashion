@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   googleSignIn,
-  facebookSignIn,
   emailRegister,
   emailSignIn,
   logOut,
@@ -70,25 +69,14 @@ export const signinWithGoogle = () => async (dispatch) => {
   }
 };
 
-export const signinWithFacebook = (anonymousStatus) => async (dispatch) => {
+export const registerWithEmail = (values) => async (dispatch) => {
   try {
-    const result = await facebookSignIn(anonymousStatus, dispatch);
-    return result;
+    await emailRegister(values, dispatch);
   } catch (error) {
     console.log(error.message);
     dispatch(setError(error.message));
   }
 };
-
-export const registerWithEmail =
-  (values, anonymousStatus) => async (dispatch) => {
-    try {
-      await emailRegister(values, anonymousStatus, dispatch);
-    } catch (error) {
-      console.log(error.message);
-      dispatch(setError(error.message));
-    }
-  };
 
 export const signinWithEmail = (email, password) => async (dispatch) => {
   try {

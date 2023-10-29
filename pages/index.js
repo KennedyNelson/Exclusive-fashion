@@ -2,6 +2,7 @@ import Head from "next/head";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
+import RazorpayCheckout from "../components/RazorpayCheckout";
 
 export default function Home({ products }) {
   return (
@@ -20,6 +21,7 @@ export default function Home({ products }) {
           <Banner />
           {/* Product Feed */}
           <ProductFeed products={products} />
+          <RazorpayCheckout />
         </main>
       </div>
     </>

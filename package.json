@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "ngrok": "ngrok http 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -16,6 +17,7 @@
     "@stripe/stripe-js": "^1.46.0",
     "@tailwindcss/line-clamp": "^0.4.2",
     "axios": "^1.2.3",
+    "crypto": "^1.0.1",
     "date-fns": "^2.29.3",
     "firebase": "^9.9.4",
     "firebase-admin": "^11.2.0",
@@ -23,11 +25,13 @@
     "moment": "^2.29.4",
     "next": "13.1.1",
     "nookies": "^2.5.2",
+    "razorpay": "^2.9.2",
     "react": "^18.2.0",
     "react-currency-formatter": "^1.1.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
     "react-responsive-carousel": "^3.2.23",
+    "shortid": "^2.2.16",
     "stripe": "^11.7.0"
   },
   "license": "MIT",
