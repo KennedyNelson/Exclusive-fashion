@@ -17,7 +17,7 @@ function Header() {
   const dispatch = useDispatch();
 
   const login = async () => {
-    router.push("/login");
+    router.push("/phone-login");
   };
   const handleLogout = async () => {
     await dispatch(signOut());
