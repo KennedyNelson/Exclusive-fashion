@@ -22,7 +22,7 @@ function Orders({ orders }) {
           <h1 className="text-3xl border-b mb-2 pb-1 border-yellow-400">
             Your Orders
           </h1>
-          {user ? (
+          {user && !user.isAnonymous ? (
             <h2>{user.email}</h2>
           ) : (
             <h2>Please sign in to see your orders</h2>

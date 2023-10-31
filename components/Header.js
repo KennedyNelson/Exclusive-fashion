@@ -6,9 +6,18 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { selectItems } from "../store/slices/basketSlice";
+import {
+  selectItems,
+  getBasketItems,
+  setbasket,
+} from "../store/slices/basketSlice";
 import amazonLogo from "../public/amazon_logo.png";
-import { signinWithGoogle, signOut } from "../store/slices/authSlice";
+import {
+  signInAnonymous,
+  signinWithGoogle,
+  signOut,
+} from "../store/slices/authSlice";
+import { useEffect } from "react";
 
 function Header() {
   const { user } = useSelector((state) => state.userAuth);
@@ -16,10 +25,20 @@ function Header() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const getItems = async (id) => {
+      await dispatch(getBasketItems(id));
+    };
+    if (user) {
+      getItems(user.id);
+    }
+  }, [user]);
+
   const login = async () => {
-    router.push("/phone-login");
+    router.push("/phone");
   };
   const handleLogout = async () => {
+    dispatch(setbasket([]));
     await dispatch(signOut());
     router.push("/");
   };
@@ -49,11 +68,14 @@ function Header() {
         </div>
         {/* // ! Right */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
-          <div className="link " onClick={!user ? login : handleLogout}>
+          <div
+            className="link "
+            onClick={!user || user.isAnonymous ? login : handleLogout}
+          >
             <p>
-              {user
+              {user && !user.isAnonymous
                 ? `Hello ${
-                    user?.displayName
+                    user.displayName
                       ? user.displayName.split(" ").slice(0, 2).join(" ")
                       : ""
                   }`

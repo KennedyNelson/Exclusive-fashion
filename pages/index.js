@@ -21,7 +21,6 @@ export default function Home({ products }) {
           <Banner />
           {/* Product Feed */}
           <ProductFeed products={products} />
-          <RazorpayCheckout />
         </main>
       </div>
     </>

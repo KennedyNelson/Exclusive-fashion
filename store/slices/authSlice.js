@@ -1,11 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  googleSignIn,
-  emailRegister,
-  emailSignIn,
+  logInAnonymously,
   logOut,
-  //   resetPassword,
-  //   rememberMeEmailSignIn,
+  signInAnonymously,
 } from "../../lib/firebase/auth";
 
 import { getUserFromDb } from "../../lib/firebase/db";
@@ -60,51 +57,15 @@ export const getUserById = (id) => async (dispatch) => {
   }
 };
 
-export const signinWithGoogle = () => async (dispatch) => {
+export const signInAnonymous = () => async (dispatch) => {
   try {
-    await googleSignIn(dispatch);
+    const result = await logInAnonymously();
+    return result;
   } catch (error) {
     console.log(error.message);
     dispatch(setError(error.message));
   }
 };
-
-export const registerWithEmail = (values) => async (dispatch) => {
-  try {
-    await emailRegister(values, dispatch);
-  } catch (error) {
-    console.log(error.message);
-    dispatch(setError(error.message));
-  }
-};
-
-export const signinWithEmail = (email, password) => async (dispatch) => {
-  try {
-    await emailSignIn(email, password);
-  } catch (error) {
-    console.log(error.message);
-    dispatch(setError(error.message));
-  }
-};
-
-// export const rememberMeSignInWithEmail =
-//   (email, password) => async (dispatch) => {
-//     try {
-//       await rememberMeEmailSignIn(email, password);
-//     } catch (error) {
-//       console.log(error.message);
-//       dispatch(setError(error.message));
-//     }
-//   };
-
-// export const sendResetPasswordMail = (email) => async (dispatch) => {
-//   try {
-//     await resetPassword(email);
-//   } catch (error) {
-//     console.log(error.message);
-//     dispatch(setError(error.message));
-//   }
-// };
 
 export const signOut = () => async (dispatch) => {
   try {

@@ -2,8 +2,22 @@ import Image from "next/image";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import Currency from "react-currency-formatter";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToBasket } from "../store/slices/basketSlice";
+import { signInAnonymous } from "../store/slices/authSlice";
+import { debounce } from "lodash";
+import { setBasketItems } from "../store/slices/basketSlice";
+
+const callDebounce = debounce(async (user, items, dispatch) => {
+  if (!user) {
+    const result = await dispatch(signInAnonymous());
+    setTimeout(async () => {
+      await dispatch(setBasketItems(result.user.uid, items));
+    }, 1500);
+  } else {
+    await dispatch(setBasketItems(user.id, items));
+  }
+}, 1000);
 
 function Product({ id, title, price, description, category, image }) {
   const dispatch = useDispatch();
@@ -11,6 +25,10 @@ function Product({ id, title, price, description, category, image }) {
   const MIN_RATING = 1;
   const [rating, setRating] = useState(0);
   const [hasPrime, setIsPrimeEnabled] = useState(0);
+
+  const { user } = useSelector((state) => state.userAuth);
+  const { items } = useSelector((state) => state.basket);
+
   useEffect(() => {
     setRating(
       Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
@@ -18,7 +36,7 @@ function Product({ id, title, price, description, category, image }) {
     setIsPrimeEnabled(Math.random() < 0.5);
   }, []);
 
-  const addItemToBasket = () => {
+  const addItemToBasket = async () => {
     const product = {
       id,
       title,
@@ -31,7 +49,10 @@ function Product({ id, title, price, description, category, image }) {
     };
     // sending products infos to redux store
     dispatch(addToBasket(product));
+    const newItems = [...items, product];
+    callDebounce(user, newItems, dispatch);
   };
+
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10 ">
       <p className="absolute top-2 right-2 text-gray-400 ">{category}</p>

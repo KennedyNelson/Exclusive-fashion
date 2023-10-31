@@ -3,11 +3,18 @@ import { CgSpinner } from "react-icons/cg";
 
 // import OtpInput from "otp-input-react";
 import { useState } from "react";
-import { auth } from "../lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth, db } from "../lib/firebase";
+import {
+  RecaptchaVerifier,
+  linkWithCredential,
+  signInWithPhoneNumber,
+  PhoneAuthProvider,
+} from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/slices/authSlice";
+import { Timestamp, doc, updateDoc } from "firebase/firestore";
 
 const Phone = () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +23,7 @@ const Phone = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState({});
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userAuth);
 
   const handleSendCode = () => {
@@ -43,23 +50,54 @@ const Phone = () => {
       });
   };
 
-  const handleVerifyCode = () => {
-    verificationId
-      .confirm(verificationCode)
-      .then((result) => {
-        // User signed in successfully.
+  const handleVerifyCode = async () => {
+    if (user && user.isAnonymous) {
+      var credential = PhoneAuthProvider.credential(
+        verificationId.verificationId,
+        verificationCode
+      );
+      try {
+        const userCred = await linkWithCredential(auth.currentUser, credential);
+        const user = userCred.user;
+        console.log("Anonymous account successfully upgraded", user);
+        setLoading(false);
+        router.push("/");
+
+        // Update the user's phone Number in DB. This has to be done as there is an already existing doc of this user
+        // without the phone number. So onAuthStateChanged will not call the setUserInDb().
+        const userData = {
+          id: user.uid,
+          isAnonymous: user.isAnonymous,
+          displayName: user.displayName,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          photoUrl: user.photoURL,
+          createdAt: Timestamp.fromDate(new Date()),
+        };
+
+        dispatch(setUser(userData));
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, {
+          phoneNumber: user.phoneNumber,
+          isAnonymous: false,
+        });
+      } catch (error) {
+        console.log("Error upgrading anonymous account", error);
+        setLoading(false);
+      }
+    } else {
+      try {
+        const result = await verificationId.confirm(verificationCode);
         const user = result.user;
         console.log(user);
         setLoading(false);
-        // ...
-      })
-      .catch((error) => {
-        setLoading(false);
 
-        // User couldn't sign in (bad verification code?)
-        // ...
-      });
-    router.push("/");
+        router.push("/");
+      } catch (error) {
+        setLoading(false);
+      }
+    }
+    // router.push("/");
   };
 
   return (
@@ -67,7 +105,7 @@ const Phone = () => {
       <div>
         <Toaster toastOptions={{ duration: 4000 }} />
         <div id="recaptcha-container"></div>
-        {user ? (
+        {user && !user.isAnonymous ? (
           <h2 className="text-center text-white font-medium text-2xl">
             👍Login Success
           </h2>

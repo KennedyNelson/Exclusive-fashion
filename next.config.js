@@ -9,11 +9,7 @@ module.exports = {
   },
   nextConfig,
   env: {
-    STRIPE_SIGNING_SECRET: process.env.STRIPE_SIGNING_SECRET,
-    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
-    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     HOST: process.env.HOST,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_ID: process.env.GOOGLE_ID,
     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
