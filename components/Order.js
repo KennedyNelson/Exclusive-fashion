@@ -12,8 +12,8 @@ const Order = ({ id, amount, amountShipping, items, timestamp, images }) => {
         <div>
           <p className="text-xs font-bold">TOTAL</p>
           <p>
-            <Currency quantity={amount} currency="USD" />- Next-Day Delivery{" "}
-            <Currency quantity={amountShipping} currency="USD" />
+            <Currency quantity={amount} currency="INR" />- Next-Day Delivery{" "}
+            <Currency quantity={amountShipping} currency="INR" />
           </p>
         </div>
         <p className="text-sm whitespace-nowrap sm:text-xl self-end flex-1 text-right text-blue-500">

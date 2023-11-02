@@ -67,11 +67,8 @@ function CheckoutProduct({
               <StarIcon key={index} className="h-5 text-green-500" />
             ))}
         </div>
-        <p className="text-xs mt-2 mb-2 line-clamp-3 text-justify">
-          {description}
-        </p>
-        <p>Rs {price}</p>
-        {/* <Currency quantity={price} /> */}
+        <p className="text-xs my-2 line-clamp-3 text-justify">{description}</p>
+        <Currency quantity={price} currency="INR" />
         {hasPrime && (
           <div className="flex items-center space-x-2">
             <img

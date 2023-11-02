@@ -29,7 +29,7 @@
 ### Project Skeleton
 
 ```
-Exclusive-fashion (folder)
+Kenny's fashion (folder)
 |----readme.md
 SOLUTION
 ├── components

@@ -16,7 +16,7 @@ import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
-import { Timestamp, doc, updateDoc } from "firebase/firestore";
+import { Timestamp, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { moveAnonymousUserData } from "../lib/firebase/db";
 
 const Phone = () => {
@@ -88,19 +88,24 @@ const Phone = () => {
         console.log("Error upgrading anonymous account", error.message);
         if (error.code == "auth/account-exists-with-different-credential") {
           try {
-            // const userCred = await auth.currentUser.linkWithCredential(e.credential);
-            // var user = userCred.user;
-            // var currentUserId = auth.currentUser.uid;
             const currentUser = auth.currentUser;
+
+            // Delete the anonymous user account
             await deleteUser(currentUser);
+
+            // Sign in with the number that the user provided
             const result = await signInWithCredential(auth, credential);
+            router.push("/");
+
+            // Move old user's data to the logged in user
             await moveAnonymousUserData(
               currentUser.uid,
               result.user.uid,
               dispatch
             );
-            router.push("/");
-            // await updateParticularResumeFromDb('resumes', 'userId', currentUserId, result.user.uid);
+
+            // Delete the old user
+            await deleteDoc(doc(db, "users", currentUser.uid));
 
             console.log(
               "Anonymous account successfully merged with an existing account"

@@ -28,7 +28,7 @@ export const makePayment = async (user) => {
 
   var options = {
     key: "rzp_test_onB6cFsdmtVCp3", // Enter the Key ID generated from the Dashboard
-    name: "Exclusive Fashion Pvt Ltd",
+    name: "Kenny's Fashion Pvt Ltd",
     currency: data.currency,
     amount: data.amount,
     email: user?.email || null,

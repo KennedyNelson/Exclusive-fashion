@@ -45,7 +45,7 @@ function Header() {
             className="w-10 h-auto sm:w-14 mr-2 cursor-pointer"
           />
           <h1 className="text-xs sm:text-lg md:text-2xl font-bold text-black font-serif ">
-            Exclusive Fashion
+            Kenny's Fashion
           </h1>
         </div>
         {/* Search */}
@@ -83,7 +83,7 @@ function Header() {
             className="relative link flex items-center"
           >
             {items?.length ? (
-              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-green-400 rounded-full">
+              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-green-400 rounded-full flex items-center justify-center">
                 {items?.length}
               </span>
             ) : (
