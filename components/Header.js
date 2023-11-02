@@ -11,7 +11,7 @@ import {
   getBasketItems,
   setbasket,
 } from "../store/slices/basketSlice";
-import amazonLogo from "../public/amazon_logo.png";
+import appLogo from "../public/app-logo.png";
 import { signOut } from "../store/slices/authSlice";
 import { useEffect } from "react";
 
@@ -37,24 +37,28 @@ function Header() {
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
             onClick={() => router.push("/")}
-            src={amazonLogo}
+            src={appLogo}
             width={120}
             height={50}
             alt="amazon logo"
             priority={true}
-            className="w-auto h-auto cursor-pointer"
+            className="w-10 h-auto sm:w-14 mr-2 cursor-pointer"
           />
+          <h1 className="text-xs sm:text-lg md:text-2xl font-bold text-black font-serif ">
+            Exclusive Fashion
+          </h1>
         </div>
         {/* Search */}
-        <div className="hidden sm:flex items-center h-10 rounded-md flex-grow cursor-pointer bg-yellow-400 hover:bg-yellow-500 ml-2 transition-all ">
+        <div className="hidden sm:flex items-center h-10 rounded-md flex-grow cursor-pointer ml-4 bg-green-400 hover:bg-green-500  transition-all ">
           <input
+            placeholder="Search..."
             className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none"
             type="text"
           />
           <MagnifyingGlassIcon className="h-12 p-4" />
         </div>
         {/* // ! Right */}
-        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
+        <div className="text-white flex items-center text-[8px] sm:text-sm space-x-2 sm:space-x-4 mx-6 whitespace-nowrap ">
           <div
             className="link "
             onClick={!user || user.isAnonymous ? login : handleLogout}
@@ -79,7 +83,7 @@ function Header() {
             className="relative link flex items-center"
           >
             {items?.length ? (
-              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-yellow-400 rounded-full">
+              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-green-400 rounded-full">
                 {items?.length}
               </span>
             ) : (
@@ -93,7 +97,7 @@ function Header() {
         </div>
       </div>
       {/* Bottom Nav */}
-      <div className="flex items-center space-x-3 p-2 bg-amazon_blue-light text-white ">
+      <div className="flex items-center space-x-3 p-2 bg-amazon_blue-light text-white text-xs sm:text-sm">
         <p className="link flex items-center">
           <Bars3Icon className="h-6 mr-1" />
           All

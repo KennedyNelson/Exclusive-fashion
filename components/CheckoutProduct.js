@@ -64,7 +64,7 @@ function CheckoutProduct({
           {Array(rating)
             .fill()
             .map((i, index) => (
-              <StarIcon key={index} className="h-5 text-yellow-500" />
+              <StarIcon key={index} className="h-5 text-green-500" />
             ))}
         </div>
         <p className="text-xs mt-2 mb-2 line-clamp-3 text-justify">
