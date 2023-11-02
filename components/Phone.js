@@ -9,12 +9,15 @@ import {
   linkWithCredential,
   signInWithPhoneNumber,
   PhoneAuthProvider,
+  deleteUser,
+  signInWithCredential,
 } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
 import { Timestamp, doc, updateDoc } from "firebase/firestore";
+import { moveAnonymousUserData } from "../lib/firebase/db";
 
 const Phone = () => {
   const [loading, setLoading] = useState(false);
@@ -72,7 +75,7 @@ const Phone = () => {
           email: user.email,
           phoneNumber: user.phoneNumber,
           photoUrl: user.photoURL,
-          createdAt: Timestamp.fromDate(new Date()),
+          createdAt: new Date().toString(),
         };
 
         dispatch(setUser(userData));
@@ -82,7 +85,34 @@ const Phone = () => {
           isAnonymous: false,
         });
       } catch (error) {
-        console.log("Error upgrading anonymous account", error);
+        console.log("Error upgrading anonymous account", error.message);
+        if (error.code == "auth/account-exists-with-different-credential") {
+          try {
+            // const userCred = await auth.currentUser.linkWithCredential(e.credential);
+            // var user = userCred.user;
+            // var currentUserId = auth.currentUser.uid;
+            const currentUser = auth.currentUser;
+            await deleteUser(currentUser);
+            const result = await signInWithCredential(auth, credential);
+            await moveAnonymousUserData(
+              currentUser.uid,
+              result.user.uid,
+              dispatch
+            );
+            router.push("/");
+            // await updateParticularResumeFromDb('resumes', 'userId', currentUserId, result.user.uid);
+
+            console.log(
+              "Anonymous account successfully merged with an existing account"
+            );
+            return result;
+          } catch (error) {
+            console.log(
+              "Error merging anonymous account with an existing account",
+              error.message
+            );
+          }
+        }
         setLoading(false);
       }
     } else {

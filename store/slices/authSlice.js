@@ -57,10 +57,14 @@ export const getUserById = (id) => async (dispatch) => {
   }
 };
 
-export const signInAnonymous = () => async (dispatch) => {
+export const signInAnonymous = (items) => async (dispatch) => {
   try {
-    const result = await logInAnonymously();
-    return result;
+    let anonymousUserData = await logInAnonymously(items);
+    anonymousUserData = {
+      ...anonymousUserData,
+      createdAt: new Date().toString(),
+    };
+    dispatch(setUser(anonymousUserData));
   } catch (error) {
     console.log(error.message);
     dispatch(setError(error.message));

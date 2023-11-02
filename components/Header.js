@@ -12,11 +12,7 @@ import {
   setbasket,
 } from "../store/slices/basketSlice";
 import amazonLogo from "../public/amazon_logo.png";
-import {
-  signInAnonymous,
-  signinWithGoogle,
-  signOut,
-} from "../store/slices/authSlice";
+import { signOut } from "../store/slices/authSlice";
 import { useEffect } from "react";
 
 function Header() {
@@ -24,15 +20,6 @@ function Header() {
   const router = useRouter();
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getItems = async (id) => {
-      await dispatch(getBasketItems(id));
-    };
-    if (user) {
-      getItems(user.id);
-    }
-  }, [user]);
 
   const login = async () => {
     router.push("/phone");
@@ -91,9 +78,13 @@ function Header() {
             onClick={() => router.push("/checkout")}
             className="relative link flex items-center"
           >
-            <span className="absolute top-0 -right-1 md:right-6 h-4 w-4 text-center text-amazon_blue font-bold bg-yellow-400 rounded-full">
-              {items?.length}
-            </span>
+            {items?.length ? (
+              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-yellow-400 rounded-full">
+                {items?.length}
+              </span>
+            ) : (
+              <></>
+            )}
             <ShoppingCartIcon className="h-10" />
             <p className="hidden md:inline font-extrabold md:text-sm mt-1">
               Cart

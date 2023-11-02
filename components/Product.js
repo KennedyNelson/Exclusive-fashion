@@ -4,20 +4,7 @@ import { useEffect, useState } from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch, useSelector } from "react-redux";
 import { addToBasket } from "../store/slices/basketSlice";
-import { signInAnonymous } from "../store/slices/authSlice";
-import { debounce } from "lodash";
-import { setBasketItems } from "../store/slices/basketSlice";
-
-const callDebounce = debounce(async (user, items, dispatch) => {
-  if (!user) {
-    const result = await dispatch(signInAnonymous());
-    setTimeout(async () => {
-      await dispatch(setBasketItems(result.user.uid, items));
-    }, 1500);
-  } else {
-    await dispatch(setBasketItems(user.id, items));
-  }
-}, 1000);
+import { addItemToBasket, useDebounce } from "../lib/utility/BasketFunctions";
 
 function Product({ id, title, price, description, category, image }) {
   const dispatch = useDispatch();
@@ -36,7 +23,7 @@ function Product({ id, title, price, description, category, image }) {
     setIsPrimeEnabled(Math.random() < 0.5);
   }, []);
 
-  const addItemToBasket = async () => {
+  const addProductToBasket = async () => {
     const product = {
       id,
       title,
@@ -49,8 +36,8 @@ function Product({ id, title, price, description, category, image }) {
     };
     // sending products infos to redux store
     dispatch(addToBasket(product));
-    const newItems = [...items, product];
-    callDebounce(user, newItems, dispatch);
+    const newItems = addItemToBasket(items, product);
+    useDebounce(user, newItems, dispatch);
   };
 
   return (
@@ -88,7 +75,7 @@ function Product({ id, title, price, description, category, image }) {
           <p className="text-xs text-gray-500">FREE Next-day Delivery</p>
         </div>
       ) : null}
-      <button onClick={addItemToBasket} className="mt-auto button ">
+      <button onClick={addProductToBasket} className="mt-auto button ">
         Add to Basket
       </button>
     </div>
