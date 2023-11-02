@@ -1,12 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  googleSignIn,
-  facebookSignIn,
-  emailRegister,
-  emailSignIn,
+  logInAnonymously,
   logOut,
-  //   resetPassword,
-  //   rememberMeEmailSignIn,
+  signInAnonymously,
 } from "../../lib/firebase/auth";
 
 import { getUserFromDb } from "../../lib/firebase/db";
@@ -61,62 +57,19 @@ export const getUserById = (id) => async (dispatch) => {
   }
 };
 
-export const signinWithGoogle = () => async (dispatch) => {
+export const signInAnonymous = (items) => async (dispatch) => {
   try {
-    await googleSignIn(dispatch);
+    let anonymousUserData = await logInAnonymously(items);
+    anonymousUserData = {
+      ...anonymousUserData,
+      createdAt: new Date().toString(),
+    };
+    dispatch(setUser(anonymousUserData));
   } catch (error) {
     console.log(error.message);
     dispatch(setError(error.message));
   }
 };
-
-export const signinWithFacebook = (anonymousStatus) => async (dispatch) => {
-  try {
-    const result = await facebookSignIn(anonymousStatus, dispatch);
-    return result;
-  } catch (error) {
-    console.log(error.message);
-    dispatch(setError(error.message));
-  }
-};
-
-export const registerWithEmail =
-  (values, anonymousStatus) => async (dispatch) => {
-    try {
-      await emailRegister(values, anonymousStatus, dispatch);
-    } catch (error) {
-      console.log(error.message);
-      dispatch(setError(error.message));
-    }
-  };
-
-export const signinWithEmail = (email, password) => async (dispatch) => {
-  try {
-    await emailSignIn(email, password);
-  } catch (error) {
-    console.log(error.message);
-    dispatch(setError(error.message));
-  }
-};
-
-// export const rememberMeSignInWithEmail =
-//   (email, password) => async (dispatch) => {
-//     try {
-//       await rememberMeEmailSignIn(email, password);
-//     } catch (error) {
-//       console.log(error.message);
-//       dispatch(setError(error.message));
-//     }
-//   };
-
-// export const sendResetPasswordMail = (email) => async (dispatch) => {
-//   try {
-//     await resetPassword(email);
-//   } catch (error) {
-//     console.log(error.message);
-//     dispatch(setError(error.message));
-//   }
-// };
 
 export const signOut = () => async (dispatch) => {
   try {

@@ -22,7 +22,7 @@ function Orders({ orders }) {
           <h1 className="text-3xl border-b mb-2 pb-1 border-yellow-400">
             Your Orders
           </h1>
-          {user ? (
+          {user && !user.isAnonymous ? (
             <h2>{user.email}</h2>
           ) : (
             <h2>Please sign in to see your orders</h2>
@@ -53,42 +53,44 @@ function Orders({ orders }) {
 
 export default Orders;
 
-export async function getServerSideProps(ctx) {
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-  // Get the user logged in credentials/clearance
-  // it is a promise, so we need to await it
+// export async function getServerSideProps(ctx) {
+//   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+//   // Get the user logged in credentials/clearance
+//   // it is a promise, so we need to await it
 
-  const { firebaseAdmin } = require("../lib/firebase/firebaseAdmin");
-  const cookies = nookies.get(ctx);
+//   const { firebaseAdmin } = require("../lib/firebase/firebaseAdmin");
+//   const cookies = nookies.get(ctx);
 
-  if (!cookies.token) {
-    return {
-      props: {},
-    };
-  }
-  const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-  console.log(token);
+//   if (!cookies.token) {
+//     return {
+//       props: {},
+//     };
+//   }
+//   const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+//   // console.log(token);
 
-  const docRef = collection(db, "users", token.uid, "orders");
-  const stripeOrders = await getDocs(docRef);
-  const orders = await Promise.all(
-    stripeOrders.docs.map(async (order) => ({
-      id: order.id,
-      amount: order.data().amount,
-      amountShipping: order.data().amount_shipping,
-      images: order.data().images,
-      timestamp: moment(order.data().timestamp.toDate()).unix(),
-      items: (
-        await stripe.checkout.sessions.listLineItems(order.id, {
-          limit: 100,
-        })
-      ).data,
-    }))
-  );
+//   if (token) {
+//     const docRef = collection(db, "users", token.uid, "orders");
+//     const stripeOrders = await getDocs(docRef);
+//     const orders = await Promise.all(
+//       stripeOrders.docs.map(async (order) => ({
+//         id: order.id,
+//         amount: order.data().amount,
+//         amountShipping: order.data().amount_shipping,
+//         images: order.data().images,
+//         timestamp: moment(order.data().timestamp.toDate()).unix(),
+//         items: (
+//           await stripe.checkout.sessions.listLineItems(order.id, {
+//             limit: 100,
+//           })
+//         ).data,
+//       }))
+//     );
+//   }
 
-  return {
-    props: {
-      orders,
-    },
-  };
-}
+//   return {
+//     props: {
+//       orders,
+//     },
+//   };
+// }

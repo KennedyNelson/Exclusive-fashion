@@ -2,8 +2,17 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import React from "react";
 import Currency from "react-currency-formatter";
-import { useDispatch } from "react-redux";
-import { addToBasket, removeFromBasket } from "../store/slices/basketSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToBasket,
+  removeFromBasket,
+  selectItems,
+} from "../store/slices/basketSlice";
+import {
+  addItemToBasket,
+  removeItemFromBasket,
+  useDebounce,
+} from "../lib/utility/BasketFunctions";
 
 function CheckoutProduct({
   id,
@@ -16,7 +25,10 @@ function CheckoutProduct({
   hasPrime,
 }) {
   const dispatch = useDispatch();
-  const addItemToBasket = () => {
+  const items = useSelector(selectItems);
+  const { user } = useSelector((state) => state.userAuth);
+
+  const addProductToBasket = () => {
     const product = {
       id,
       title,
@@ -28,9 +40,13 @@ function CheckoutProduct({
       hasPrime,
     };
     dispatch(addToBasket(product));
+    const newItems = addItemToBasket(items, product);
+    useDebounce(user, newItems, dispatch);
   };
-  const removeItemFromBasket = () => {
+  const removeProductFromBasket = () => {
     dispatch(removeFromBasket({ id }));
+    const newItems = removeItemFromBasket(items, id);
+    useDebounce(user, newItems, dispatch);
   };
   return (
     <div className="grid grid-cols-5">
@@ -48,7 +64,7 @@ function CheckoutProduct({
           {Array(rating)
             .fill()
             .map((i, index) => (
-              <StarIcon key={index} className="h-5 text-yellow-500" />
+              <StarIcon key={index} className="h-5 text-green-500" />
             ))}
         </div>
         <p className="text-xs mt-2 mb-2 line-clamp-3 text-justify">
@@ -70,10 +86,10 @@ function CheckoutProduct({
       </div>
       {/* Right buttons */}
       <div className="flex flex-col space-y-2 my-auto justify-self-end">
-        <button className="button mt-auto" onClick={addItemToBasket}>
+        <button className="button mt-auto" onClick={addProductToBasket}>
           Add to Basket{" "}
         </button>
-        <button className="button mt-auto" onClick={removeItemFromBasket}>
+        <button className="button mt-auto" onClick={removeProductFromBasket}>
           {" "}
           Remove from Basket{" "}
         </button>
