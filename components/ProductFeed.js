@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Product from "./Product";
 
 function ProductFeed({ products }) {
@@ -19,7 +19,7 @@ function ProductFeed({ products }) {
         />
       ))}
       <img
-        className="md:col-span-full"
+        className="hidden md:block md:col-span-full"
         src="https://links.papareact.com/dyz"
         alt="middle banner"
       />

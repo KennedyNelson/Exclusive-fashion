@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const initializeRazorpay = () => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -14,25 +16,26 @@ const initializeRazorpay = () => {
   });
 };
 
-export const makePayment = async (user) => {
-  const res = await initializeRazorpay();
+export const makePayment = async (user, total) => {
+  let res = await initializeRazorpay();
   if (!res) {
     alert("Razorpay SDK Failed to load");
     return;
   }
 
   // Make API call to the serverless API
-  const data = await fetch("/api/razorpay", { method: "POST" }).then((t) =>
-    t.json()
-  );
+  res = await axios.post("/api/razorpay", {
+    method: "POST",
+    total: Math.floor(total),
+  });
 
   var options = {
     key: "rzp_test_onB6cFsdmtVCp3", // Enter the Key ID generated from the Dashboard
     name: "Kenny's Fashion Pvt Ltd",
-    currency: data.currency,
-    amount: data.amount,
+    currency: res.data.currency,
+    amount: res.data.amount,
     email: user?.email || null,
-    order_id: data.id,
+    order_id: res.data.id,
     description: "Thankyou for your test donation",
     handler: function (response) {
       // Validate payment at server - using webhooks is a better idea.
