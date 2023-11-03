@@ -1,5 +1,5 @@
 {
-  "name": "exclusive-fashion",
+  "name": "Kenny's-fashion",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@badrap/bar-of-progress": "^0.2.2",
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.13",
     "@next/font": "13.1.1",
     "@reduxjs/toolkit": "^1.9.1",

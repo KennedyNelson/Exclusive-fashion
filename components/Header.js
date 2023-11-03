@@ -8,24 +8,26 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectItems,
-  getBasketItems,
-  setbasket,
-} from "../store/slices/basketSlice";
+  getCartItems,
+  setcartitems,
+} from "../store/slices/cartSlice";
 import appLogo from "../public/app-logo.png";
 import { signOut } from "../store/slices/authSlice";
-import { useEffect } from "react";
+// import Modal from "./Modal";
+import { useState } from "react";
 
 function Header() {
   const { user } = useSelector((state) => state.userAuth);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const dispatch = useDispatch();
 
   const login = async () => {
-    router.push("/phone");
+    setShowModal(true);
   };
   const handleLogout = async () => {
-    dispatch(setbasket([]));
+    dispatch(setcartitems([]));
     await dispatch(signOut());
     router.push("/");
   };
@@ -33,8 +35,9 @@ function Header() {
   const items = useSelector(selectItems);
   return (
     <header className="fixed w-screen top-0 z-50 ">
-      <div className="flex items-center bg-amazon_blue top-0 z-50  shadow-lg p-2 py-3 flex-grow">
-        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
+      {/* {showModal && <Modal open={showModal} setOpen={setShowModal} />} */}
+      <div className="flex items-center bg-app_theme top-0 z-50  shadow-lg p-2 py-3 flex-grow">
+        <div className="mt-2 flex items-center flex-grow md:flex-grow-0">
           <Image
             onClick={() => router.push("/")}
             src={appLogo}
@@ -45,11 +48,11 @@ function Header() {
             className="w-10 h-auto sm:w-14 mr-2 cursor-pointer"
           />
           <h1 className="text-xs sm:text-lg md:text-2xl font-bold text-black font-serif ">
-            Exclusive Fashion
+            Kenny's Fashion
           </h1>
         </div>
         {/* Search */}
-        <div className="hidden sm:flex items-center h-10 rounded-md flex-grow cursor-pointer ml-4 bg-green-400 hover:bg-green-500  transition-all ">
+        <div className="hidden md:flex sm:mx-10 items-center h-10 rounded-md flex-grow cursor-pointer ml-4 bg-green-400 hover:bg-green-500  transition-all ">
           <input
             placeholder="Search..."
             className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none"
@@ -58,7 +61,7 @@ function Header() {
           <MagnifyingGlassIcon className="h-12 p-4" />
         </div>
         {/* // ! Right */}
-        <div className="text-white flex items-center text-[8px] sm:text-sm space-x-2 sm:space-x-4 mx-6 whitespace-nowrap ">
+        <div className="text-white flex items-center text-[10px] sm:text-sm space-x-2 sm:space-x-4 mx-1 sm:mx-4 whitespace-nowrap justify-end ">
           <div
             className="link "
             onClick={!user || user.isAnonymous ? login : handleLogout}
@@ -83,7 +86,7 @@ function Header() {
             className="relative link flex items-center"
           >
             {items?.length ? (
-              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-amazon_blue font-bold bg-green-400 rounded-full">
+              <span className="absolute top-0 -right-1 md:right-6 h-5 w-5 text-center text-app_theme font-bold bg-green-400 rounded-full flex items-center justify-center">
                 {items?.length}
               </span>
             ) : (
@@ -97,7 +100,7 @@ function Header() {
         </div>
       </div>
       {/* Bottom Nav */}
-      <div className="flex items-center space-x-3 p-2 bg-amazon_blue-light text-white text-xs sm:text-sm">
+      <div className="flex items-center space-x-3 p-2 bg-app_theme-light text-white text-xs sm:text-sm">
         <p className="link flex items-center">
           <Bars3Icon className="h-6 mr-1" />
           All

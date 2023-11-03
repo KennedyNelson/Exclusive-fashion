@@ -3,8 +3,8 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch, useSelector } from "react-redux";
-import { addToBasket } from "../store/slices/basketSlice";
-import { addItemToBasket, useDebounce } from "../lib/utility/BasketFunctions";
+import { addtocart } from "../store/slices/cartSlice";
+import { addItemToCart, useDebounce } from "../lib/utility/CartFunctions";
 
 function Product({ id, title, price, description, category, image }) {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function Product({ id, title, price, description, category, image }) {
   const [hasPrime, setIsPrimeEnabled] = useState(0);
 
   const { user } = useSelector((state) => state.userAuth);
-  const { items } = useSelector((state) => state.basket);
+  const { items } = useSelector((state) => state.cart);
 
   useEffect(() => {
     setRating(
@@ -23,7 +23,7 @@ function Product({ id, title, price, description, category, image }) {
     setIsPrimeEnabled(Math.random() < 0.5);
   }, []);
 
-  const addProductToBasket = async () => {
+  const addProductoToCart = async () => {
     const product = {
       id,
       title,
@@ -35,8 +35,8 @@ function Product({ id, title, price, description, category, image }) {
       hasPrime,
     };
     // sending products infos to redux store
-    dispatch(addToBasket(product));
-    const newItems = addItemToBasket(items, product);
+    dispatch(addtocart(product));
+    const newItems = addItemToCart(items, product);
     useDebounce(user, newItems, dispatch);
   };
 
@@ -60,8 +60,7 @@ function Product({ id, title, price, description, category, image }) {
       </div>
       <p className="text-xs line-clamp-2">{description}</p>
       <div className="text-sm md:text-md">
-        <p>Rs {price}</p>
-        {/* <Currency quantity={price} currency="GBP" /> */}
+        <Currency quantity={price} currency="INR" />
       </div>
       {hasPrime ? (
         <div className=" flex items-center space-x-2 ">
@@ -77,8 +76,8 @@ function Product({ id, title, price, description, category, image }) {
         </div>
       ) : null}
       <div className="flex-grow" />
-      <button onClick={addProductToBasket} className=" button">
-        Add to Basket
+      <button onClick={addProductoToCart} className=" button">
+        Add to Cart
       </button>
     </div>
   );

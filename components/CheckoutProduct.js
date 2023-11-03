@@ -4,15 +4,15 @@ import React from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToBasket,
-  removeFromBasket,
+  addtocart,
+  removefromcart,
   selectItems,
-} from "../store/slices/basketSlice";
+} from "../store/slices/cartSlice";
 import {
-  addItemToBasket,
-  removeItemFromBasket,
+  addItemToCart,
+  removeItemFromCart,
   useDebounce,
-} from "../lib/utility/BasketFunctions";
+} from "../lib/utility/CartFunctions";
 
 function CheckoutProduct({
   id,
@@ -28,7 +28,7 @@ function CheckoutProduct({
   const items = useSelector(selectItems);
   const { user } = useSelector((state) => state.userAuth);
 
-  const addProductToBasket = () => {
+  const addProductoToCart = () => {
     const product = {
       id,
       title,
@@ -39,13 +39,13 @@ function CheckoutProduct({
       image,
       hasPrime,
     };
-    dispatch(addToBasket(product));
-    const newItems = addItemToBasket(items, product);
+    dispatch(addtocart(product));
+    const newItems = addItemToCart(items, product);
     useDebounce(user, newItems, dispatch);
   };
-  const removeProductFromBasket = () => {
-    dispatch(removeFromBasket({ id }));
-    const newItems = removeItemFromBasket(items, id);
+  const removeProductFromCart = () => {
+    dispatch(removefromcart({ id }));
+    const newItems = removeItemFromCart(items, id);
     useDebounce(user, newItems, dispatch);
   };
   return (
@@ -67,11 +67,8 @@ function CheckoutProduct({
               <StarIcon key={index} className="h-5 text-green-500" />
             ))}
         </div>
-        <p className="text-xs mt-2 mb-2 line-clamp-3 text-justify">
-          {description}
-        </p>
-        <p>Rs {price}</p>
-        {/* <Currency quantity={price} /> */}
+        <p className="text-xs my-2 line-clamp-3 text-justify">{description}</p>
+        <Currency quantity={price} currency="INR" />
         {hasPrime && (
           <div className="flex items-center space-x-2">
             <img
@@ -86,12 +83,12 @@ function CheckoutProduct({
       </div>
       {/* Right buttons */}
       <div className="flex flex-col space-y-2 my-auto justify-self-end">
-        <button className="button mt-auto" onClick={addProductToBasket}>
-          Add to Basket{" "}
+        <button className="button mt-auto" onClick={addProductoToCart}>
+          Add to Cart{" "}
         </button>
-        <button className="button mt-auto" onClick={removeProductFromBasket}>
+        <button className="button mt-auto" onClick={removeProductFromCart}>
           {" "}
-          Remove from Basket{" "}
+          Remove from Cart{" "}
         </button>
       </div>
     </div>

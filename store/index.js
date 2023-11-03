@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import basketReducer from "./slices/basketSlice";
+import cartReducer from "./slices/cartSlice";
 import authReducer from "./slices/authSlice";
 
 // The Global Store
 export const store = configureStore({
   reducer: {
-    basket: basketReducer,
+    cart: cartReducer,
     userAuth: authReducer,
   },
 });

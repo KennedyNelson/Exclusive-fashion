@@ -8,7 +8,7 @@ import ProtectedRoute from "../lib/firebase/auth";
 export default function App({ Component, pageProps }) {
   const progress = new ProgressBar({
     size: 4,
-    color: "#EAB308",
+    color: "green",
     className: "z-50",
     delay: 100,
   });

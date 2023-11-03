@@ -29,7 +29,7 @@
 ### Project Skeleton
 
 ```
-Exclusive-fashion (folder)
+Kenny's fashion (folder)
 |----readme.md
 SOLUTION
 ├── components
@@ -57,7 +57,7 @@ SOLUTION
 │    ├── logo.svg
 │    └── prime_banner.jpg
 ├── slices
-│    └── basketSlice.js
+│    └── cartSlice.js
 ├── styles
 │    └── global.css
 ├── .gitignore
