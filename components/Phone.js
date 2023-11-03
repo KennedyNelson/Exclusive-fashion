@@ -15,7 +15,7 @@ import {
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../store/slices/authSlice";
+import { setuser } from "../store/slices/authSlice";
 import { Timestamp, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { moveAnonymousUserData } from "../lib/firebase/db";
 
@@ -54,6 +54,7 @@ const Phone = () => {
   };
 
   const handleVerifyCode = async () => {
+    setLoading(true);
     if (user && user.isAnonymous) {
       var credential = PhoneAuthProvider.credential(
         verificationId.verificationId,
@@ -78,7 +79,7 @@ const Phone = () => {
           createdAt: new Date().toString(),
         };
 
-        dispatch(setUser(userData));
+        dispatch(setuser(userData));
         const docRef = doc(db, "users", user.uid);
         await updateDoc(docRef, {
           phoneNumber: user.phoneNumber,

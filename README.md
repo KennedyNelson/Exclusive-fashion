@@ -57,7 +57,7 @@ SOLUTION
 │    ├── logo.svg
 │    └── prime_banner.jpg
 ├── slices
-│    └── basketSlice.js
+│    └── cartSlice.js
 ├── styles
 │    └── global.css
 ├── .gitignore

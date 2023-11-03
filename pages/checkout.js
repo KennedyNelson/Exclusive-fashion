@@ -1,24 +1,34 @@
 import Image from "next/image";
 import Header from "../components/Header";
 import { useSelector } from "react-redux";
-import { selectItems, selectTotal } from "../store/slices/basketSlice";
+import { selectItems, selectTotal } from "../store/slices/cartSlice";
 import CheckoutProduct from "../components/CheckoutProduct";
 import Head from "next/head";
 import Currency from "react-currency-formatter";
 import banner from "../public/prime_banner.jpg";
 import axios from "axios";
 import { makePayment } from "../components/RazorpayCheckout";
+import { useState } from "react";
+import Modal from "../components/Modal";
 
 function Checkout() {
+  const [showModal, setShowModal] = useState(false);
+
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
   const { user } = useSelector((state) => state.userAuth);
 
-  const createCheckoutSession = async () => {
-    makePayment(user);
+  const onCheckoutClick = () => {
+    if (user && !user.isAnonymous) {
+      makePayment(user);
+    } else if (user && user.isAnonymous) {
+      setShowModal(true);
+    }
   };
+
   return (
     <div className="bg-gray-100 ">
+      {showModal && <Modal open={showModal} setOpen={setShowModal} />}
       <Head>
         <title>Checkout Page</title>
       </Head>
@@ -69,22 +79,14 @@ function Checkout() {
               <button
                 // role="link" for stripe!
                 role="link"
-                onClick={() =>
-                  user && !user.isAnonymous && createCheckoutSession()
-                }
-                disabled={!user || user.isAnonymous}
-                className={`button mt-2 ${
-                  !user &&
-                  "from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed"
-                }`}
+                onClick={onCheckoutClick}
+                className="button mt-2"
               >
-                {!user || user.isAnonymous
-                  ? "Sign in to checkout"
-                  : "Proceed to checkout"}
+                Proceed to checkout
               </button>
 
               <p className="text-xs mt-2">
-                By clicking "Proceed to checkout", you agree to Amazon's
+                By clicking "Proceed to checkout", you agree to Kenny's
                 Conditions of Use and Privacy Notice.
               </p>
             </div>
