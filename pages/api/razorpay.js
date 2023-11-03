@@ -11,10 +11,10 @@ export default async function handler(req, res) {
 
     // Create an order -> generate the OrderID -> Send it to the Front-end
     const payment_capture = 1;
-    const amount = 499;
+    const amount = req.body.total;
     const currency = "INR";
     const options = {
-      amount: (amount * 100).toString(),
+      amount: amount * 100,
       currency,
       receipt: shortid.generate(),
       payment_capture,

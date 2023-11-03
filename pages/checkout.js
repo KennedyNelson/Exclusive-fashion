@@ -20,7 +20,7 @@ function Checkout() {
 
   const onCheckoutClick = () => {
     if (user && !user.isAnonymous) {
-      makePayment(user);
+      makePayment(user, Math.floor(total));
     } else if (user && user.isAnonymous) {
       setShowModal(true);
     }
