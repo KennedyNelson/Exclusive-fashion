@@ -7,9 +7,9 @@ import Head from "next/head";
 import Currency from "react-currency-formatter";
 import banner from "../public/prime_banner.jpg";
 import axios from "axios";
-import { makePayment } from "../components/RazorpayCheckout";
 import { useState } from "react";
 import Modal from "../components/Modal";
+import { useRouter } from "next/router";
 
 function Checkout() {
   const [showModal, setShowModal] = useState(false);
@@ -17,10 +17,11 @@ function Checkout() {
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
   const { user } = useSelector((state) => state.userAuth);
+  const router = useRouter();
 
   const onCheckoutClick = () => {
     if (user && !user.isAnonymous) {
-      makePayment(user, Math.floor(total));
+      router.push("/form");
     } else if (user && user.isAnonymous) {
       setShowModal(true);
     }

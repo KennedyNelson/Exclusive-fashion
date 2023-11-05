@@ -2,7 +2,7 @@ import Head from "next/head";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
-import RazorpayCheckout from "../components/RazorpayCheckout";
+import RazorpayCheckout from "../lib/razorpay/razorpayCheckout";
 
 export default function Home({ products }) {
   return (
@@ -33,7 +33,10 @@ export async function getServerSideProps() {
   );
   return {
     props: {
-      products,
+      products: products.map((product) => ({
+        ...product,
+        id: product.title.substring(0, 2),
+      })),
     },
   };
 }

@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { setuser } from "../store/slices/authSlice";
 import { Timestamp, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { moveAnonymousUserData } from "../lib/firebase/db";
+import { moveAnonymousUserDataInDb } from "../lib/firebase/db";
 
 const Phone = () => {
   const [loading, setLoading] = useState(false);
@@ -99,7 +99,7 @@ const Phone = () => {
             router.push("/");
 
             // Move old user's data to the logged in user
-            await moveAnonymousUserData(
+            await moveAnonymousUserDataInDb(
               currentUser.uid,
               result.user.uid,
               dispatch

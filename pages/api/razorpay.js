@@ -9,6 +9,8 @@ export default async function handler(req, res) {
       key_secret: "CtjIqAqBTWrqz7WVcJqNktjc",
     });
 
+    const user = req.body.user;
+    const items = req.body.items;
     // Create an order -> generate the OrderID -> Send it to the Front-end
     const payment_capture = 1;
     const amount = req.body.total;
@@ -18,6 +20,11 @@ export default async function handler(req, res) {
       currency,
       receipt: shortid.generate(),
       payment_capture,
+      notes: {
+        userId: user?.id || null,
+        productIds: JSON.stringify(items.map((item) => item.id)),
+        // productImages: JSON.stringify(items.map((item) => item.image)),
+      },
     };
 
     try {

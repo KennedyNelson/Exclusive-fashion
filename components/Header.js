@@ -47,7 +47,7 @@ function Header() {
             priority={true}
             className="w-10 h-auto sm:w-14 mr-2 cursor-pointer"
           />
-          <h1 className="text-xs sm:text-lg md:text-2xl font-bold text-black font-serif ">
+          <h1 className="text-sm sm:text-lg md:text-2xl font-bold text-black font-serif ">
             Kenny's Fashion
           </h1>
         </div>
@@ -62,24 +62,27 @@ function Header() {
         </div>
         {/* // ! Right */}
         <div className="text-white flex items-center text-[10px] sm:text-sm space-x-2 sm:space-x-4 mx-1 sm:mx-4 whitespace-nowrap justify-end ">
-          <div
-            className="link "
-            onClick={!user || user.isAnonymous ? login : handleLogout}
-          >
-            <p>
-              {user && !user.isAnonymous
+          {user && !user.isAnonymous && (
+            <div
+              className="link "
+              onClick={user && !user.isAnonymous && handleLogout}
+            >
+              <p>
+                {/* {user && !user.isAnonymous
                 ? `Hello ${
                     user.displayName
                       ? user.displayName.split(" ").slice(0, 2).join(" ")
                       : ""
                   }`
-                : "Sign In"}
-            </p>
-            <p className="font-extrabold md:text-sm">Account & Lists</p>
-          </div>
+                : "Sign In"} */}
+                Log Out
+              </p>
+              <p className="font-extrabold md:text-sm">Account & Lists</p>
+            </div>
+          )}
           <div onClick={() => router.push("/orders")} className="link ">
-            <p>Returns</p>
-            <p className="font-extrabold md:text-sm">& Orders</p>
+            <p>Order</p>
+            <p className="font-extrabold md:text-sm">& Returns</p>
           </div>
           <div
             onClick={() => router.push("/checkout")}
