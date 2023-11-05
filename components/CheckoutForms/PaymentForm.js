@@ -5,6 +5,7 @@ import Currency from "react-currency-formatter";
 import Modal from "../Modal";
 import { makePayment } from "../../lib/razorpay/razorpayCheckout";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 function PaymentForm({ step, setStep }) {
   const items = useSelector(selectItems);

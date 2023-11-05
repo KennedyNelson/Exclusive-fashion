@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CheckoutProduct from "../CheckoutProduct";

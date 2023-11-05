@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { usePincode } from "../../lib/utility/usePincode";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAddress } from "../../store/slices/authSlice";
+import Head from "next/head";
 
 function AddressForm({ step, setStep }) {
   const [name, setName] = useState("");
