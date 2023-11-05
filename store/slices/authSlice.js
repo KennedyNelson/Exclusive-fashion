@@ -5,7 +5,7 @@ import {
   signInAnonymously,
 } from "../../lib/firebase/auth";
 
-import { getUserFromDb } from "../../lib/firebase/db";
+import { addUserAddressInDb } from "../../lib/firebase/db";
 
 const initialState = {
   user: null,
@@ -61,6 +61,16 @@ export const signOut = () => async (dispatch) => {
   try {
     await logOut();
     dispatch(signout());
+  } catch (error) {
+    console.log(error.message);
+    dispatch(seterror(error.message));
+  }
+};
+
+export const addUserAddress = (user, address) => async (dispatch) => {
+  try {
+    await addUserAddressInDb(user.id, address);
+    dispatch(setuser({ ...user, address }));
   } catch (error) {
     console.log(error.message);
     dispatch(seterror(error.message));

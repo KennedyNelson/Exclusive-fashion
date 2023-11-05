@@ -1,26 +1,25 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  ExclamationTriangleIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
 import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { CgSpinner } from "react-icons/cg";
-import {
-  PhoneAuthProvider,
-  RecaptchaVerifier,
-  deleteUser,
-  linkWithCredential,
-  signInWithCredential,
-  signInWithPhoneNumber,
-} from "firebase/auth";
-import { auth, db } from "../lib/firebase";
 import toast from "react-hot-toast";
 import { setuser } from "../store/slices/authSlice";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { moveAnonymousUserData } from "../lib/firebase/db";
+import {
+  deleteUserFromDb,
+  moveAnonymousUserDataInDb,
+  updateUserInDb,
+} from "../lib/firebase/db";
+import {
+  captchaVerifier,
+  deleteAnonymousUser,
+  getCredential,
+  linkCredentials,
+  logInWithCredential,
+  logInWithPhoneNumber,
+} from "../lib/firebase/auth";
+import { auth } from "../lib/firebase";
 
 export default function Modal({ open, setOpen }) {
   const cancelButtonRef = useRef(null);
@@ -33,42 +32,39 @@ export default function Modal({ open, setOpen }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userAuth);
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     setLoading(true);
-    const recaptchaVerifier = new RecaptchaVerifier(
-      "send-code-button",
-      {
-        size: "invisible",
-      },
-      auth
-    );
+    const recaptchaVerifier = captchaVerifier();
 
-    signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
-      .then((verificationId) => {
-        console.log(verificationId);
-        setVerificationId(verificationId);
-        setLoading(false);
-        setShowOTP(true);
-        toast.success("OTP sent successfully!");
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
+    try {
+      const verificationId = await logInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        recaptchaVerifier
+      );
+      setVerificationId(verificationId);
+      setLoading(false);
+      setShowOTP(true);
+      toast.success("OTP sent successfully!");
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const handleVerifyCode = async () => {
     if (user && user.isAnonymous) {
-      var credential = PhoneAuthProvider.credential(
+      const credential = getCredential(
         verificationId.verificationId,
         verificationCode
       );
+
       try {
-        const userCred = await linkWithCredential(auth.currentUser, credential);
+        const userCred = await linkCredentials(auth.currentUser, credential);
         const user = userCred.user;
         console.log("Anonymous account successfully upgraded", user);
         setLoading(false);
-        router.push("/");
+        router.push("/form");
 
         // Update the user's phone Number in DB. This has to be done as there is an already existing doc of this user
         // without the phone number. So onAuthStateChanged will not call the setUserInDb().
@@ -83,11 +79,7 @@ export default function Modal({ open, setOpen }) {
         };
 
         dispatch(setuser(userData));
-        const docRef = doc(db, "users", user.uid);
-        await updateDoc(docRef, {
-          phoneNumber: user.phoneNumber,
-          isAnonymous: false,
-        });
+        await updateUserInDb(user);
       } catch (error) {
         console.log("Error upgrading anonymous account", error.message);
         if (error.code == "auth/account-exists-with-different-credential") {
@@ -95,21 +87,22 @@ export default function Modal({ open, setOpen }) {
             const currentUser = auth.currentUser;
 
             // Delete the anonymous user account
-            await deleteUser(currentUser);
+            await deleteAnonymousUser(currentUser);
 
             // Sign in with the number that the user provided
-            const result = await signInWithCredential(auth, credential);
-            router.push("/");
+            const result = await logInWithCredential(credential);
+
+            router.push("/form");
 
             // Move old user's data to the logged in user
-            await moveAnonymousUserData(
+            await moveAnonymousUserDataInDb(
               currentUser.uid,
               result.user.uid,
               dispatch
             );
 
             // Delete the old user
-            await deleteDoc(doc(db, "users", currentUser.uid));
+            await deleteUserFromDb(currentUser.uid);
 
             console.log(
               "Anonymous account successfully merged with an existing account"
@@ -127,16 +120,17 @@ export default function Modal({ open, setOpen }) {
     } else {
       try {
         const result = await verificationId.confirm(verificationCode);
+        // Successfully logged in the anonymous user
         const user = result.user;
         console.log(user);
         setLoading(false);
 
-        router.push("/");
+        router.push("/form");
       } catch (error) {
         setLoading(false);
       }
     }
-    // router.push("/");
+    // router.push("/form");
   };
 
   return (

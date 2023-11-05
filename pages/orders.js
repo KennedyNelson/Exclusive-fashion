@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import nookies from "nookies";
 
 function Orders({ orders }) {
-  // console.log(orders);
   const { user } = useSelector((state) => state.userAuth);
 
   return (
@@ -31,7 +30,7 @@ function Orders({ orders }) {
           <h2>{orders?.length} Orders</h2>
 
           <div className="mt-5 space-y-4">
-            {orders?.map(
+            {/* {orders?.map(
               ({ id, amount, amountShipping, items, timestamp, images }) => (
                 <Order
                   key={id}
@@ -43,7 +42,16 @@ function Orders({ orders }) {
                   images={images}
                 />
               )
-            )}
+            )} */}
+            {orders?.map(({ id, amount, items, images }) => (
+              <Order
+                key={id}
+                id={id}
+                amount={amount}
+                items={items}
+                images={images}
+              />
+            ))}
           </div>
         </main>
       </div>
@@ -53,44 +61,48 @@ function Orders({ orders }) {
 
 export default Orders;
 
-// export async function getServerSideProps(ctx) {
-//   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-//   // Get the user logged in credentials/clearance
-//   // it is a promise, so we need to await it
+export async function getServerSideProps(ctx) {
+  // Get the user logged in credentials/clearance
+  // it is a promise, so we need to await it
 
-//   const { firebaseAdmin } = require("../lib/firebase/firebaseAdmin");
-//   const cookies = nookies.get(ctx);
+  const { firebaseAdmin } = require("../lib/firebase/firebaseAdmin");
+  const cookies = nookies.get(ctx);
 
-//   if (!cookies.token) {
-//     return {
-//       props: {},
-//     };
-//   }
-//   const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-//   // console.log(token);
+  if (!cookies.token) {
+    return {
+      props: {},
+    };
+  }
+  const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+  // console.log(token);
 
-//   if (token) {
-//     const docRef = collection(db, "users", token.uid, "orders");
-//     const stripeOrders = await getDocs(docRef);
-//     const orders = await Promise.all(
-//       stripeOrders.docs.map(async (order) => ({
-//         id: order.id,
-//         amount: order.data().amount,
-//         amountShipping: order.data().amount_shipping,
-//         images: order.data().images,
-//         timestamp: moment(order.data().timestamp.toDate()).unix(),
-//         items: (
-//           await stripe.checkout.sessions.listLineItems(order.id, {
-//             limit: 100,
-//           })
-//         ).data,
-//       }))
-//     );
-//   }
+  if (!token) {
+    return {
+      props: {},
+    };
+  }
 
-//   return {
-//     props: {
-//       orders,
-//     },
-//   };
-// }
+  const docRef = collection(db, "users", token.uid, "orders");
+  const razorpayOrders = await getDocs(docRef);
+  const orders = razorpayOrders.docs.map((order) => ({
+    id: order.id,
+    amount: order.data().amount,
+    items: order.data().items,
+    images: order.data().items.map((item) => item.image),
+    // amountShipping: order.data().amount_shipping,
+    // images: order.data().notes.images,
+    // timestamp: moment(order.data().timestamp.toDate()).unix(),
+    // timestamp: moment.unix(order.data().created_at),
+    // items: (
+    //   await stripe.checkout.sessions.listLineItems(order.id, {
+    //     limit: 100,
+    //   })
+    // ).data,
+  }));
+
+  return {
+    props: {
+      orders,
+    },
+  };
+}

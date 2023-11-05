@@ -35,9 +35,10 @@ export const selectTotal = (state) =>
 export default cartSlice.reducer;
 
 // Async Actions
-export const setCartItems = (id, items) => async () => {
+export const setCartItems = (id, items) => async (dispatch) => {
   try {
     await setCartInDb(id, items);
+    dispatch(setcartitems(items));
   } catch (error) {
     console.log(error.message);
     // dispatch(seterror(error.message));
