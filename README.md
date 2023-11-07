@@ -52,7 +52,7 @@ SOLUTION
 │    ├── orders.js
 │    └── success.js
 ├── public
-│    ├── amazon_logo.png
+│    ├── app_logo.png
 │    ├── favicon.ico
 │    ├── logo.svg
 │    └── prime_banner.jpg
@@ -119,14 +119,10 @@ To run this project;
 After these you can run the project as usual =>
 
 ```
-$ git clone https://github.com/esadakman/nextjs-amazon-clone.git
-$ cd ./nextjs-amazon-clone
+$ git clone https://github.com/KennedyNelson/Exclusive-fashion.git
+$ cd ./Exclusive-fashion
 $ npm install / yarn
 $ npm run dev / yarn dev
 
 Open http://localhost:3000 with your browser to see the result.
 ```
-
-### Preview of the Project
-
- <img src="./amazon-clone.gif" alt="gif"   />

@@ -23,7 +23,7 @@ function Product({ id, title, price, description, category, image }) {
     setIsPrimeEnabled(Math.random() < 0.5);
   }, []);
 
-  const addProductoToCart = async () => {
+  const addProductToCart = async () => {
     const product = {
       id,
       title,
@@ -76,7 +76,7 @@ function Product({ id, title, price, description, category, image }) {
         </div>
       ) : null}
       <div className="flex-grow" />
-      <button onClick={addProductoToCart} className=" button">
+      <button onClick={addProductToCart} className="button">
         Add to Cart
       </button>
     </div>

@@ -6,7 +6,7 @@ const Order = ({ id, amount, items, images }) => {
     <div className="relative border rounded-md">
       <div className="flex items-center space-x-10 p-5 mt-4 bg-gray-100 text-sm text-gray-600">
         <div>
-          <p className="font-bold text-xs">ORDER PLACES</p>
+          <p className="font-bold text-xs">ORDER PLACED</p>
           {/* <p>{moment.unix(timestamp).format("DD MMM YYYY")}</p> */}
         </div>
         <div>

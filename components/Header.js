@@ -6,44 +6,44 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectItems,
-  getCartItems,
-  setcartitems,
-} from "../store/slices/cartSlice";
+import { setcartitems, selectItems } from "../store/slices/cartSlice";
 import appLogo from "../public/app-logo.png";
 import { signOut } from "../store/slices/authSlice";
 // import Modal from "./Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { setcategoryproducts } from "../store/slices/productsSlice";
 
 function Header() {
   const { user } = useSelector((state) => state.userAuth);
+  const { products } = useSelector((state) => state.products);
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const dispatch = useDispatch();
 
-  const login = async () => {
-    setShowModal(true);
-  };
+  const items = useSelector(selectItems);
+
   const handleLogout = async () => {
     dispatch(setcartitems([]));
     await dispatch(signOut());
     router.push("/");
   };
 
-  const items = useSelector(selectItems);
+  const handleShowCategoriesClick = (category) => {
+    dispatch(setcategoryproducts(category));
+  };
+
   return (
     <header className="fixed w-screen top-0 z-50 ">
       {/* {showModal && <Modal open={showModal} setOpen={setShowModal} />} */}
-      <div className="flex items-center bg-app_theme top-0 z-50  shadow-lg p-2 py-3 flex-grow">
+      <div className="flex items-center bg-app_primary top-0 z-50  shadow-lg p-2 py-3 flex-grow">
         <div className="mt-2 flex items-center flex-grow md:flex-grow-0">
           <Image
             onClick={() => router.push("/")}
             src={appLogo}
             width={120}
             height={50}
-            alt="amazon logo"
+            alt="app logo"
             priority={true}
             className="w-10 h-auto sm:w-14 mr-2 cursor-pointer"
           />
@@ -52,7 +52,7 @@ function Header() {
           </h1>
         </div>
         {/* Search */}
-        <div className="hidden md:flex sm:mx-10 items-center h-10 rounded-md flex-grow cursor-pointer ml-4 bg-green-400 hover:bg-green-500  transition-all ">
+        <div className="hidden md:flex sm:mx-10 items-center h-10 rounded-md flex-grow cursor-pointer ml-4 bg-green-400 hover:bg-app_secondary  transition-all ">
           <input
             placeholder="Search..."
             className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none"
@@ -103,20 +103,24 @@ function Header() {
         </div>
       </div>
       {/* Bottom Nav */}
-      <div className="flex items-center space-x-3 p-2 bg-app_theme-light text-white text-xs sm:text-sm">
-        <p className="link flex items-center">
+      <div className="flex items-center space-x-3 p-2 bg-app_primary-light text-white text-xs sm:text-sm overflow-x-auto">
+        <p
+          className="link flex items-center"
+          onClick={() => handleShowCategoriesClick("All")}
+        >
           <Bars3Icon className="h-6 mr-1" />
           All
         </p>
-        <p className="link">Prime Video</p>
-        <p className="link">Amazon Business</p>
-        <p className="link">Today's Deals</p>
-        <p className="link hidden lg:inline-flex">Electronics</p>
-        <p className="link hidden lg:inline-flex">Food & Grocery</p>
-        <p className="link hidden lg:inline-flex">Prime</p>
-        <p className="link hidden lg:inline-flex">Buy Again</p>
-        <p className="link hidden lg:inline-flex">Shopping Toolkit</p>
-        {/* <p className="link hidden lg:inline-flex">Health & Personal Care</p> */}
+        {Array.from(new Set(products.map((item) => item.category)))
+          ?.slice(0, 5)
+          .map((category) => (
+            <p
+              onClick={() => handleShowCategoriesClick(category)}
+              className="link capitalize"
+            >
+              {category}
+            </p>
+          ))}
       </div>
     </header>
   );

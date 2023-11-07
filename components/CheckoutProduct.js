@@ -28,7 +28,7 @@ function CheckoutProduct({
   const items = useSelector(selectItems);
   const { user } = useSelector((state) => state.userAuth);
 
-  const addProductoToCart = () => {
+  const addProductToCart = () => {
     const product = {
       id,
       title,
@@ -83,7 +83,7 @@ function CheckoutProduct({
       </div>
       {/* Right buttons */}
       <div className="flex flex-col space-y-2 my-auto justify-self-end">
-        <button className="button mt-auto" onClick={addProductoToCart}>
+        <button className="button mt-auto" onClick={addProductToCart}>
           Add to Cart{" "}
         </button>
         <button className="button mt-auto" onClick={removeProductFromCart}>

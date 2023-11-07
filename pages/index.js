@@ -2,9 +2,19 @@ import Head from "next/head";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
-import RazorpayCheckout from "../lib/razorpay/razorpayCheckout";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setproducts } from "../store/slices/productsSlice";
 
 export default function Home({ products }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (products) {
+      dispatch(setproducts(products));
+    }
+  }, []);
+
   return (
     <>
       <div className="bg-gray-100 ">
@@ -20,7 +30,7 @@ export default function Home({ products }) {
           {/* Banner */}
           <Banner />
           {/* Product Feed */}
-          <ProductFeed products={products} />
+          <ProductFeed />
         </main>
       </div>
     </>
@@ -33,10 +43,7 @@ export async function getServerSideProps() {
   );
   return {
     props: {
-      products: products.map((product) => ({
-        ...product,
-        id: product.title.substring(0, 2),
-      })),
+      products,
     },
   };
 }

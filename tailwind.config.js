@@ -9,9 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        app_theme: {
+        app_primary: {
           light: "#232F3E",
           DEFAULT: "#8458B3",
+        },
+        app_secondary: {
+          DEFAULT: "#48BB78",
         },
       },
     },
