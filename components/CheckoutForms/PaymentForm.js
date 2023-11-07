@@ -31,33 +31,34 @@ function PaymentForm({ step, setStep }) {
       <Head>
         <title>Payment Form</title>
       </Head>
-      <h2 className="text-lg font-medium mb-4">Step {step} of 3</h2>
-      <div className="flex mb-4">
+      <h2 className="text-sm sm:text-lg font-medium mb-4">Step {step} of 3</h2>
+      <div className="flex mb-4 text-sm sm:text-lg">
         <div
           className={`w-1/2 ${
-            step === 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-          } p-2 text-center cursor-pointer`}
+            step === 1 ? "button" : "bg-gray-200"
+          } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
           onClick={() => setStep(1)}
         >
           Address
         </div>
-        <div
-          className={`w-1/2 border-r border-gray-400 ${
-            step === 2 ? "bg-blue-500 text-white" : "bg-gray-200"
-          } p-2 text-center cursor-pointer`}
+        <button
+          type="submit"
+          className={`w-1/2 ${
+            step === 2 ? "button" : "bg-gray-200"
+          } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
           onClick={() => setStep(2)}
         >
           Order Summary
-        </div>
+        </button>
         <div
-          className={`w-1/2 border-r border-gray-400 ${
-            step === 3 ? "bg-blue-500 text-white" : "bg-gray-200"
-          } p-2 text-center cursor-pointer`}
+          className={`w-1/2 ${
+            step === 3 ? "button" : "bg-gray-200"
+          } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
         >
           Payment
         </div>
       </div>
-      <div className="flex flex-col bg-white p-10 shadow-md min-w-[400px] mb-4">
+      <div className="flex flex-col bg-white p-10 shadow-md mb-4">
         {items.length > 0 && (
           <div>
             <h2 className="whitespace-nowrap">
@@ -92,16 +93,13 @@ function PaymentForm({ step, setStep }) {
         />
       </div>
       <div className="flex justify-between mt-6">
-        <button
+        {/* <button
           className="bg-gray-300 px-6 py-1.5 rounded-lg text-gray-700 hover:bg-gray-400"
           onClick={handleBack}
         >
           Back
-        </button>
-        <button
-          className="bg-blue-500 px-6 py-1.5 rounded-lg text-white hover:bg-blue-600"
-          onClick={handleNext}
-        >
+        </button> */}
+        <button className="button w-full" onClick={handleNext}>
           Place Order
         </button>
       </div>

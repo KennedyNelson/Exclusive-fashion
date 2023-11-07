@@ -218,7 +218,7 @@ export default function Modal({ open, setOpen }) {
                       </div>
                       <button
                         onClick={handleVerifyCode}
-                        className="bg-green-500 mt-6 p-2 w-full gap-1 items-center justify-center  text-white rounded flex space-x-4"
+                        className="bg-app_secondary mt-6 p-2 w-full gap-1 items-center justify-center  text-white rounded flex space-x-4"
                       >
                         {loading && (
                           <CgSpinner size={20} className="mt-1 animate-spin" />
@@ -230,7 +230,7 @@ export default function Modal({ open, setOpen }) {
                     <div className="flex flex-row justify-center items-center space-x-6">
                       {/* <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    className="inline-flex w-full justify-center rounded-md bg-app_secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => setOpen(false)}
                   >
                     Deactivate
@@ -238,7 +238,7 @@ export default function Modal({ open, setOpen }) {
                       <button
                         id="send-code-button"
                         onClick={handleSendCode}
-                        className="bg-green-500 mt-6 p-2 w-full text-white rounded flex space-x-4"
+                        className="bg-app_secondary mt-6 p-2 w-full text-white rounded flex space-x-4"
                       >
                         {loading && (
                           <CgSpinner size={20} className="mt-1 animate-spin" />

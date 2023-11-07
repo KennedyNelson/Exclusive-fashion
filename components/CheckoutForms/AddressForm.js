@@ -72,35 +72,53 @@ function AddressForm({ step, setStep }) {
         <title>Address Form</title>
       </Head>
       <form onSubmit={handleNext}>
-        <h2 className="text-lg font-medium mb-4">Step {step} of 3</h2>
-        <div className="flex mb-4">
+        <h2 className="text-sm sm:text-lg font-medium mb-4">
+          Step {step} of 3
+        </h2>
+        <div className="flex mb-4 text-sm sm:text-lg">
           <div
             className={`w-1/2 ${
-              step === 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-            } p-2 text-center cursor-pointer`}
+              step === 1 ? "button" : "bg-gray-100"
+            } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
           >
             Address
           </div>
           <button
             type="submit"
-            className={`w-1/2 border-r border-gray-400 ${
-              step === 2 ? "bg-blue-500 text-white" : "bg-gray-200"
-            } p-2 text-center cursor-pointer`}
+            className={`w-1/2 ${
+              step === 2 ? "button" : "bg-gray-100"
+            } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
+            onClick={() => setStep(2)}
           >
             Order Summary
           </button>
           <div
-            className={`w-1/2 border-r border-gray-400 ${
-              step === 3 ? "bg-blue-500 text-white" : "bg-gray-200"
-            } p-2 text-center cursor-pointer`}
+            className={`w-1/2 ${
+              step === 3 ? "button" : "bg-gray-100"
+            } p-2 text-xs sm:text-lg text-center cursor-pointer rounded-sm`}
             onClick={() => setStep(3)}
           >
             Payment
           </div>
         </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
+        <div className="text-sm sm:text-lg">
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Full Name
+            </label>
+            <input
+              placeholder=""
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              type="text"
+              id="name"
+              name="name"
+              htmlFor="name"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {/* <label
+            className="block mb-1 font-medium mb-2 text-gray-700"
             htmlFor="name"
           >
             Full Name
@@ -113,134 +131,118 @@ function AddressForm({ step, setStep }) {
             id="name"
             name="name"
             className="w-full border border-gray-400 p-2"
-          />
+          /> */}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Phone Number
+            </label>
+            <input
+              placeholder=""
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              type="text"
+              id="name"
+              name="phoneNumber"
+              htmlFor="phoneNumber"
+              required
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Building Name/House No.
+            </label>
+            <input
+              placeholder=""
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              value={buildingName}
+              onChange={(e) => setBuildingName(e.target.value)}
+              type="text"
+              id="buildingName"
+              name="buildingName"
+              htmlFor="buildingName"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Area, Colony
+            </label>
+            <input
+              placeholder=""
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              type="text"
+              id="area"
+              name="area"
+              htmlFor="area"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Landmark
+            </label>
+            <input
+              placeholder=""
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              value={landmark}
+              onChange={(e) => setLandmark(e.target.value)}
+              type="text"
+              id="landmark"
+              name="landmark"
+              htmlFor="landmark"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              Pincode
+            </label>
+            <input
+              placeholder="+919999999999"
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              value={pincode}
+              onChange={(e) => setPincode(e.target.value)}
+              type="number"
+              id="pincode"
+              name="pincode"
+              htmlFor="pincode"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              City
+            </label>
+            <input
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              required
+              disabled
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              type="text"
+              id="city"
+              htmlFor="city"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold leading-6 text-gray-900">
+              State
+            </label>
+            <input
+              className="w-full p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+              required
+              disabled
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              type="text"
+              id="state"
+              name="state"
+              htmlFor="state"
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="phoneNumber"
-          >
-            Phone Number
-          </label>
-          <input
-            required
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            type="number"
-            id="number"
-            name="phoneNumber"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="buildingName"
-          >
-            Building Name/House No.
-          </label>
-          <input
-            required
-            value={buildingName}
-            onChange={(e) => setBuildingName(e.target.value)}
-            type="text"
-            id="buildingName"
-            name="buildingName"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="area"
-          >
-            Area, Colony
-          </label>
-          <input
-            required
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-            type="text"
-            id="area"
-            name="area"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="landmark"
-          >
-            Landmark
-          </label>
-          <input
-            required
-            value={landmark}
-            onChange={(e) => setLandmark(e.target.value)}
-            type="text"
-            id="landmark"
-            name="landmark"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="pincode"
-          >
-            Pincode
-          </label>
-          <input
-            required
-            value={pincode}
-            onChange={(e) => setPincode(e.target.value)}
-            type="number"
-            id="pincode"
-            name="pincode"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="pincode"
-          >
-            City
-          </label>
-          <input
-            required
-            disabled
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            type="text"
-            id="city"
-            name="city"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-medium mb-2 text-gray-700"
-            htmlFor="pincode"
-          >
-            State
-          </label>
-          <input
-            required
-            disabled
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            type="text"
-            id="state"
-            name="state"
-            className="w-full border border-gray-400 p-2"
-          />
-        </div>
-        <div className="mb-4">
-          <button
-            type="submit"
-            className="bg-blue-500 px-6 py-1.5 rounded-lg text-white hover:bg-blue-600"
-          >
+        <div className="mt-4">
+          <button type="submit" className="button w-full">
             Next
           </button>
         </div>
