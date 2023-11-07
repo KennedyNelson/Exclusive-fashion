@@ -140,6 +140,7 @@ export default function Modal({ open, setOpen }) {
         className="absolute z-100"
         initialFocus={cancelButtonRef}
         onClose={setOpen}
+        open={open}
       >
         <Transition.Child
           as={Fragment}
@@ -154,7 +155,7 @@ export default function Modal({ open, setOpen }) {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full justify-center items-center p-4 text-center sm:p-0">
+          <div className="flex min-h-full justify-center items-center text-center sm:p-0 -mt-20">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -164,17 +165,17 @@ export default function Modal({ open, setOpen }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="flex flex-col items-center justify-center space-y-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg p-4">
+                <div className="bg-white p-4">
+                  <div className="flex flex-col items-center justify-center space-y-2">
                     <Dialog.Title
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
                       Verify your Phone Number
                     </Dialog.Title>
-                    <div className="flex items-center h-10 rounded-md flex-grow cursor-pointer transition-all ">
-                      <div className=" text-green-500 w-fit mx-auto p-4 rounded-full">
+                    <div className="flex items-center rounded-md transition-all w-full">
+                      <div className=" text-green-500 w-fit mx-auto mr-4 rounded-full">
                         <BsTelephoneFill size={30} />
                       </div>
                       <input
@@ -187,60 +188,65 @@ export default function Modal({ open, setOpen }) {
                     </div>
                   </div>
                   {showOTP ? (
-                    <div className="flex flex-col items-center justify-center mt-4">
-                      <Dialog.Title
-                        as="h4"
-                        className="text-base font-semibold leading-6 text-gray-900"
-                      >
-                        Enter the OTP
-                      </Dialog.Title>
+                    <>
+                      <div className="flex flex-col items-center space-y-2 justify-center mt-4">
+                        <Dialog.Title
+                          as="h4"
+                          className="text-base font-semibold leading-6 text-gray-900"
+                        >
+                          Enter the OTP
+                        </Dialog.Title>
 
-                      <div className="flex justify-center items-center">
-                        <div className="bg-white text-green-500 w-fit mx-auto p-4 rounded-full">
-                          <BsFillShieldLockFill size={30} />
+                        <div className="flex items-center rounded-md transition-all w-full">
+                          <div className="bg-white text-green-500 w-fit mx-auto mr-4 rounded-full">
+                            <BsFillShieldLockFill size={30} />
+                          </div>
+
+                          <input
+                            className="p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
+                            value={verificationCode}
+                            onChange={(e) =>
+                              setVerificationCode(e.target.value)
+                            }
+                            //   OTPLength={6}
+                            //   otpType="number"
+                            //   disabled={false}
+                            autoFocus
+                            //   className="opt-container "
+                          ></input>
                         </div>
-
-                        <input
-                          className="p-2 h-full flex-grow flex-shrink rounded-l-md focus:outline-none border border-green-300 rounded-md  focus:ring-2 focus:ring-green-100  active:from-green-500 transition duration-100"
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
-                          //   OTPLength={6}
-                          //   otpType="number"
-                          //   disabled={false}
-                          autoFocus
-                          //   className="opt-container "
-                        ></input>
                       </div>
                       <button
                         onClick={handleVerifyCode}
-                        className="bg-green-500 p-4 flex gap-1 items-center justify-center py-2.5 text-white rounded flex space-x-4"
+                        className="bg-green-500 mt-6 p-2 w-full gap-1 items-center justify-center  text-white rounded flex space-x-4"
                       >
                         {loading && (
                           <CgSpinner size={20} className="mt-1 animate-spin" />
                         )}
                         <span>Verify OTP</span>
                       </button>
-                    </div>
-                  ) : null}
-                </div>
-                <div className="flex flex-row justify-center items-center space-x-6">
-                  {/* <button
+                    </>
+                  ) : (
+                    <div className="flex flex-row justify-center items-center space-x-6">
+                      {/* <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => setOpen(false)}
                   >
                     Deactivate
                   </button> */}
-                  <button
-                    id="send-code-button"
-                    onClick={handleSendCode}
-                    className="bg-green-500 p-6 my-6 py-2.5 text-white rounded flex space-x-4"
-                  >
-                    {loading && (
-                      <CgSpinner size={20} className="mt-1 animate-spin" />
-                    )}
-                    <span>Get OTP</span>
-                  </button>
+                      <button
+                        id="send-code-button"
+                        onClick={handleSendCode}
+                        className="bg-green-500 mt-6 p-2 w-full text-white rounded flex space-x-4"
+                      >
+                        {loading && (
+                          <CgSpinner size={20} className="mt-1 animate-spin" />
+                        )}
+                        <span>Get OTP</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
