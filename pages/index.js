@@ -5,6 +5,7 @@ import ProductFeed from "../components/ProductFeed";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setproducts } from "../store/slices/productsSlice";
+import { firebaseAdmin } from "../lib/firebase/firebaseAdmin";
 
 export default function Home({ products }) {
   const dispatch = useDispatch();
@@ -38,9 +39,18 @@ export default function Home({ products }) {
 }
 
 export async function getServerSideProps() {
-  const products = await fetch("https://fakestoreapi.com/products").then(
-    (res) => res.json()
-  );
+  // const products = await fetch("https://fakestoreapi.com/products").then(
+  //   (res) => res.json()
+  // );
+
+  const productsSnapshot = await firebaseAdmin
+    .firestore()
+    .collection("products")
+    .get();
+  const products = productsSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
   return {
     props: {
       products,
