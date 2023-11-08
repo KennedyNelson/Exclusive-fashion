@@ -10,7 +10,7 @@ function pushdatatodb() {
       (res) => res.json()
     );
     products.forEach((product) => {
-      const docRef = doc(db, "products", product.title.substring(0, 2));
+      const docRef = doc(db, "products", product.title.substring(0, 4));
       batch.set(docRef, product);
     });
     await batch.commit();

@@ -19,14 +19,14 @@ function AddressForm({ step, setStep }) {
 
   useEffect(() => {
     if (user) {
-      setName(user.address.name || "");
-      setPhoneNumber(user.address.phoneNumber || "");
-      setBuildingName(user.address.buildingName || "");
-      setArea(user.address.area || "");
-      setLandmark(user.address.landmark || "");
-      setPincode(user.address.pincode || "");
-      setCity(user.address.city || "");
-      setState(user.address.state || "");
+      setName(user.address?.name || "");
+      setPhoneNumber(user.address?.phoneNumber || "");
+      setBuildingName(user.address?.buildingName || "");
+      setArea(user.address?.area || "");
+      setLandmark(user.address?.landmark || "");
+      setPincode(user.address?.pincode || "");
+      setCity(user.address?.city || "");
+      setState(user.address?.state || "");
     }
   }, [user]);
 

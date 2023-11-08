@@ -76,6 +76,7 @@ export default function Modal({ open, setOpen }) {
           phoneNumber: user.phoneNumber,
           photoUrl: user.photoURL,
           createdAt: new Date().toString(),
+          address: {},
         };
 
         dispatch(setuser(userData));

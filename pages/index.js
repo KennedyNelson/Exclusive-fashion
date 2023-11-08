@@ -43,7 +43,10 @@ export async function getServerSideProps() {
   );
   return {
     props: {
-      products,
+      products: products.map((product) => ({
+        ...product,
+        id: product.category.substring(0, 4),
+      })),
     },
   };
 }
