@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
   categoryProducts: [],
+  category: null,
 };
 
 export const productsSlice = createSlice({
@@ -20,6 +21,7 @@ export const productsSlice = createSlice({
     //   state.items = removeItemFromCart(state.items, action.payload.id);
     // },
     setcategoryproducts: (state, action) => {
+      state.category = action.payload;
       if (action.payload === "All") {
         state.categoryProducts = state.products;
       } else {

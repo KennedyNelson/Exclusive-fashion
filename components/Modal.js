@@ -53,6 +53,7 @@ export default function Modal({ open, setOpen }) {
   };
 
   const handleVerifyCode = async () => {
+    setLoading(true);
     if (user && user.isAnonymous) {
       const credential = getCredential(
         verificationId.verificationId,
@@ -219,34 +220,29 @@ export default function Modal({ open, setOpen }) {
                       </div>
                       <button
                         onClick={handleVerifyCode}
-                        className="bg-app_secondary mt-6 p-2 w-full gap-1 items-center justify-center  text-white rounded flex space-x-4"
+                        className="button w-full flex justify-center items-center mt-6"
+                        disabled={loading}
                       >
-                        {loading && (
+                        {loading ? (
                           <CgSpinner size={20} className="mt-1 animate-spin" />
+                        ) : (
+                          <span>Verify OTP</span>
                         )}
-                        <span>Verify OTP</span>
                       </button>
                     </>
                   ) : (
-                    <div className="flex flex-row justify-center items-center space-x-6">
-                      {/* <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-app_secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpen(false)}
-                  >
-                    Deactivate
-                  </button> */}
-                      <button
-                        id="send-code-button"
-                        onClick={handleSendCode}
-                        className="bg-app_secondary mt-6 p-2 w-full text-white rounded flex space-x-4"
-                      >
-                        {loading && (
-                          <CgSpinner size={20} className="mt-1 animate-spin" />
-                        )}
+                    <button
+                      id="send-code-button"
+                      onClick={handleSendCode}
+                      className="button w-full flex justify-center items-center mt-6"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <CgSpinner size={20} className="mt-1 animate-spin" />
+                      ) : (
                         <span>Get OTP</span>
-                      </button>
-                    </div>
+                      )}
+                    </button>
                   )}
                 </div>
               </Dialog.Panel>

@@ -30,7 +30,12 @@ function Header() {
   };
 
   const handleShowCategoriesClick = (category) => {
-    dispatch(setcategoryproducts(category));
+    if (router.pathname !== "/") {
+      dispatch(setcategoryproducts(category));
+      router.push("/");
+    } else {
+      dispatch(setcategoryproducts(category));
+    }
   };
 
   return (

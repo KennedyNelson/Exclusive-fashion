@@ -69,7 +69,7 @@ export default function OrderSummaryForm({ step, setStep }) {
         </div>
       </div>
       {/* Right */}
-      <div className="flex flex-col bg-white p-10 shadow-md min-w-[400px]">
+      <div className="pt-10">
         {items.length > 0 && (
           <div>
             <h2 className="whitespace-nowrap">
